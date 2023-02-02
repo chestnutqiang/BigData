@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+  <property>
+      <name>yarn.nodemanager.vmem-pmem-ratio</name>
+      <value>5</value>
+  </property>
+  <!--指定zookeeper集群地址-->
+  <property>
+      <name>yarn.resourcemanager.zk-address</name>
+      <value>node1:2181,node2:2181,node3:2181</value>
+  </property>
+  <!--NodeManager上运行的附属服务，需配置成mapreduce_shuffle，才可运行MapReduce程序-->
+  <property>
+      <name>yarn.nodemanager.aux-services</name>
+      <value>mapreduce_shuffle,spark_shuffle</value>
+  </property>
+  <property>
+      <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+      <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+  </property>
+  <property>
+      <name>spark.shuffle.service.port</name>
+      <value>7337</value>
+  </property>
+  <!-- 开启日志聚合 -->
+  <property>
+      <name>yarn.log-aggregation-enable</name>
+      <value>true</value>
+  </property>
+  <!-- 日志聚合HDFS目录 -->
+  <property>
+      <name>yarn.nodemanager.remote-app-log-dir</name>
+      <value>/opt/module/hadoop-2.10.1/yarn/logs</value>
+      <description>default is /tmp/logs</description>
+  </property>
+  <!-- 日志保存时间7days,单位秒 -->
+  <property>
+      <name>yarn.log-aggregation.retain-seconds</name>
+      <value>2592000</value>
+      <description>远程日志保存时间单位s</description>
+  </property>
+  <property>
+      <name>yarn.log.server.url</name>
+      <value>http://node3:19888/jobhistory/logs/</value>
+      <description>log server的地址</description>
+  </property>
+  <!--开启自动恢复功能-->
+  <property>
+      <name>yarn.resourcemanager.recovery.enabled</name>
+      <value>true</value>
+  </property>
+  <property>
+      <name>yarn.nodemanager.vmem-check-enabled</name>
+      <value>false</value>
+  </property>
+  <!-- resourcemanager的状态信息存储在zookeeper集群上 -->
+  <property>
+      <name>yarn.resourcemanager.store.class</name>
+      <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+  </property>
+  <!-- yarn资源队列配置 -->
+  <property>
+      <name>yarn.resourcemanager.scheduler.class</name>
+      <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+  </property>
+  <!--  开启RM高可用  -->
+  <property>
+      <name>yarn.resourcemanager.ha.enabled</name>
+      <value>true</value>
+  </property>
+  <!-- 指定RM的cluster id，一组高可用的rm共同的逻辑id -->
+  <property>
+      <name>yarn.resourcemanager.cluster-id</name>
+      <value>yarn-rm-cluster</value>
+  </property>
+  <!--     指定RM的名字，可以随便自定义 -->
+  <property>
+      <name>yarn.resourcemanager.ha.rm-ids</name>
+      <value>rm1,rm2</value>
+  </property>
+  <!--     分别指定RM的地址 -->
+  <!-- node1 -->
+  <property>
+      <name>yarn.resourcemanager.hostname.rm1</name>
+      <value>node1</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.webapp.address.rm1</name>
+      <value>node1:8088</value>
+      <description>HTTP访问的端口号</description>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.scheduler.address.rm1</name>
+      <value>node1:8030</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.resource-tracker.address.rm1</name>
+      <value>node1:8031</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.address.rm1</name>
+      <value>node1:8032</value>
+  </property>
+  <!-- node2 -->
+  <property>
+      <name>yarn.resourcemanager.hostname.rm2</name>
+      <value>node2</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.webapp.address.rm2</name>
+      <value>node2:8088</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.scheduler.address.rm2</name>
+      <value>node2:8030</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.resource-tracker.address.rm2</name>
+      <value>node2:8031</value>
+  </property>
+  <property>
+      <name>yarn.resourcemanager.address.rm2</name>
+      <value>node2:8032</value>
+  </property>
+</configuration>
